@@ -4,13 +4,13 @@ from ezprint import *
 import numpy as np
 from math import *
 
+x_list = x_points = np.arange(-5.0, 5.0, 0.1)
 x_null_0 = 0
 x_null_1 = 0
 x_null_2 = 0
+y_list = []
 xo = 0
 yo = 0
-x_list = [1, 2, 3, 4, 5, -1, -2, -3, -4, -5]
-y_list = []
 D = 0
 
 
@@ -18,34 +18,23 @@ def create_plot(a, b, c):
 	global x_list
 	global y_list
 
-	if D < 0:
-		x_list.append(xo)
-		y_list.append(yo)
-		for k in x_list:
-			func = a * k**2 + b * k + c
-			y_list.append(func)
-		plt.plot(x_list, y_list)
-		plt.show()
+	for k in x_list:
+		func = a * k**2 + b * k + c
+		y_list.append(func)
+	plt.plot(x_list, y_list)
+	plt.arrow(0, -1000, 0, 2000)
+	plt.arrow(-1000, 0, 2000, 0)
+	plt.axis('equal')
+	plt.show()
 
-		return x_list, y_list
-
-	elif D > 0:
-		for k in x_list:
-			func = a * k**2 + b * k + c
-			y_list.append(func)
-		plt.plot(x_list, y_list)
-		plt.show()
-
-		return x_list, y_list
-
-	elif D == 0:
-		pass
+	return x_list, y_list
 
 
 def f(a, b, c):
 	# a * x**2 + b * x + c
 	global x_null_1
 	global x_null_2
+	global y_list
 	global xo
 	global yo
 	global D
@@ -57,8 +46,8 @@ def f(a, b, c):
 	D = b**2 - 4 * a * c
 	if D > 0:
 		#search null func.
-		x_null_1 = ((-b + sqrt(D)) / 2 * a)
-		x_null_2 = (-b - sqrt(D)) / 2 * a
+		x_null_1 = (-b + sqrt(D)) / (2 * a)
+		x_null_2 = (-b - sqrt(D)) / (2 * a)
 	elif D == 0:
 		x_null_0 = -b / (2 * a)
 	elif D < 0:
@@ -66,30 +55,34 @@ def f(a, b, c):
 
 
 def main():
-	a = int(input('Input a: '))
-	b = int(input('Input b: '))
-	c = int(input('Input c: '))
+	try:
+		a = int(input('Input a: '))
+	except:
+		a = 1
+	try:
+		b = int(input('Input b: '))
+	except:
+		b = 1
+	try:
+		c = int(input('Input c: '))
+	except:
+		c = 1
 	f(a, b, c)
 	cls()
+	create_plot(a, b, c)
 	p('Your args:\na= ' + str(a) + '\nb= ' + str(b) + '\nc= ' + str(c))
 	p('Discriminant: ' + str(D))
 	p('TOPS FUNC.')
 	p('x tops: ' + str(xo))
 	p('y tops: ' + str(yo))
 	p('NULL FUNC.')
+	p('x_0 null: ' + str(x_null_0))
 	p('x_1 null: ' + str(x_null_1))
 	p('x_2 null: ' + str(x_null_2))
-	create_plot(a, b, c)
-	p('X points: ')
-	ch = 0
-	for i in x_list:
-		ch+=1
-		p(str(i))
-	p('Y points: ')
-	ch1 = 0
-	for j in y_list:
-		ch1+=1
-		p(str(j))
+	p('PROPERTIES:')
+	p('1) D(f)=R or (-∞; +∞)\n2) E(f)=[0; +∞)\n3) Even function\n4)The function decreases in the interval (-∞; 0)\n  The function increases in the interval (0; +∞)\n5) Asymptote has not')
+	p('6) Min value of x: ' + str(round(np.amin(x_list), 5)) + '\n   Min value of y: ' + str(round(min(y_list), 5)))
+	p('   Max value of x: ' + str(round(np.amax(x_list), 5)) + '\n   Max value of y: ' + str(round(max(y_list), 5)))
 
 
 if __name__ == '__main__':
