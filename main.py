@@ -7,10 +7,10 @@ from math import *
 x_null_0 = 0
 x_null_1 = 0
 x_null_2 = 0
-x_list = []
-y_list = []
 xo = 0
 yo = 0
+x_list = [1, 2, 3, 4, 5, -1, -2, -3, -4, -5]
+y_list = []
 D = 0
 
 
@@ -21,26 +21,26 @@ def create_plot(a, b, c):
 	if D < 0:
 		x_list.append(xo)
 		y_list.append(yo)
-		for k in range(1, 6):
-			x_list.append(k)
+		for k in x_list:
 			func = a * k**2 + b * k + c
 			y_list.append(func)
 		plt.plot(x_list, y_list)
 		plt.show()
+
 		return x_list, y_list
 
 	elif D > 0:
-		for k in range(1, 6):
-			x_list.append(k)
+		for k in x_list:
 			func = a * k**2 + b * k + c
 			y_list.append(func)
 		plt.plot(x_list, y_list)
 		plt.show()
 
 		return x_list, y_list
+
 	elif D == 0:
 		pass
-		
+
 
 def f(a, b, c):
 	# a * x**2 + b * x + c
@@ -84,12 +84,12 @@ def main():
 	ch = 0
 	for i in x_list:
 		ch+=1
-		p(str(ch) + ' - ' + str(i))
+		p(str(i))
 	p('Y points: ')
 	ch1 = 0
 	for j in y_list:
 		ch1+=1
-		p(str(ch1) + ' - ' + str(j))
+		p(str(j))
 
 
 if __name__ == '__main__':
