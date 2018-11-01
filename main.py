@@ -1,10 +1,19 @@
 
-import matplotlib.pyplot as plt
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+#<--Import lib
 from ezprint import *
-import numpy as np
 from math import *
+from desc import *
+
+import threading
+import numpy as np
+import matplotlib.pyplot as plt
 
 x_list = x_points = np.arange(-5.0, 5.0, 0.1)
+start_frame = None
+thirdFrame = None
 x_null_0 = 0
 x_null_1 = 0
 x_null_2 = 0
@@ -15,18 +24,58 @@ D = 0
 
 
 def create_plot(a, b, c):
+	global start_frame
 	global x_list
 	global y_list
+
+	func_name = 'y = '
+	if a != 1:
+		func_name = func_name + str(a) + ' * x^2'
+	else:
+		func_name = func_name + 'x^2'
+
+	if b == 1:
+		func_name = func_name + ' + x'
+	elif b == -1:
+		func_name = func_name + ' - x'
+	elif b < 0:
+		func_name = func_name + ' - ' + str(-b) + ' * x'
+	elif b > 0:
+		func_name = func_name + ' + ' + str(b) + ' * x'
+	else:
+		pass
+
+	if c > 0:
+		func_name = func_name + ' + ' + str(c)
+	elif c < 0:
+		func_name = func_name + ' - ' + str(-c)
+	else:
+		pass
+
+	f(a, b, c)
+	x_list = list(np.arange(xo - 5.0, xo - 0.005, 0.005)) + [xo] + list(np.arange(xo + 0.05, xo + 5.005, 0.005))
 
 	for k in x_list:
 		func = a * k**2 + b * k + c
 		y_list.append(func)
-	plt.plot(x_list, y_list)
-	plt.arrow(0, -1000, 0, 2000)
-	plt.arrow(-1000, 0, 2000, 0)
-	plt.axis('equal')
-	plt.show()
+	plt.plot(x_list, y_list, 'r')
+	plt.arrow(0, -1000000, 0, 2000000)
+	plt.arrow(-1000000, 0, 2000000, 0)
 
+	plt.gcf().canvas.set_window_title(func_name)
+
+	plt.grid(color='k', linestyle='-', linewidth=0.5)
+	
+	plt.axis('equal')
+
+	try:
+		start_frame = threading.Thread(target= lambda : main_frame(a, b, c, D, xo, yo, x_null_0, x_null_1, x_null_2, x_list, y_list, func_name))
+		start_frame.start()
+	except:
+		pass
+
+	plt.show()
+	
 	return x_list, y_list
 
 
@@ -55,6 +104,7 @@ def f(a, b, c):
 
 
 def main():
+	p('y=ax^2+bx+c')
 	try:
 		a = int(input('Input a: '))
 	except:
@@ -67,22 +117,8 @@ def main():
 		c = int(input('Input c: '))
 	except:
 		c = 1
-	f(a, b, c)
 	cls()
 	create_plot(a, b, c)
-	p('Your args:\na= ' + str(a) + '\nb= ' + str(b) + '\nc= ' + str(c))
-	p('Discriminant: ' + str(D))
-	p('TOPS FUNC.')
-	p('x tops: ' + str(xo))
-	p('y tops: ' + str(yo))
-	p('NULL FUNC.')
-	p('x_0 null: ' + str(x_null_0))
-	p('x_1 null: ' + str(x_null_1))
-	p('x_2 null: ' + str(x_null_2))
-	p('PROPERTIES:')
-	p('1) D(f)=R or (-∞; +∞)\n2) E(f)=[0; +∞)\n3) Even function\n4)The function decreases in the interval (-∞; 0)\n  The function increases in the interval (0; +∞)\n5) Asymptote has not')
-	p('6) Min value of x: ' + str(round(np.amin(x_list), 5)) + '\n   Min value of y: ' + str(round(min(y_list), 5)))
-	p('   Max value of x: ' + str(round(np.amax(x_list), 5)) + '\n   Max value of y: ' + str(round(max(y_list), 5)))
 
 
 if __name__ == '__main__':
